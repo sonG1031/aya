@@ -5,7 +5,7 @@ const audio = new Audio();
 let cnt = 0;
 let state = false;
 
-audio.src = "sounds/헉.mp3";
+audio.src = "sounds/촵.mp3";
 cntText.innerHTML = `${cnt}`;
 
 function isMobile() {
