@@ -1,4 +1,5 @@
 const cntText = document.querySelector("#cnt-num");
+const title = document.querySelector("h1");
 const minsub = document.querySelector("img");
 const page = document.querySelector("body");
 const audio = new Audio();
@@ -6,7 +7,6 @@ let cnt = 0;
 let state = false;
 
 audio.src = "sounds/촵.mp3";
-cntText.innerHTML = `${cnt}`;
 
 function isMobile() {
     let user = navigator.userAgent;
@@ -21,29 +21,41 @@ function isMobile() {
     }
     return is_mobile;
 }
-
-function changeImgDown() {
+function saveCnt() {
+    localStorage.setItem("count", cnt);
+}
+function codeDown() {
+    audio.load();
     audio.play();
     cnt += 1;
     minsub.src = "img/after.png";
     cntText.innerHTML = `+${cnt}`;
+    cntText.className = "active-num";
+    title.className = "active-title";
+    saveCnt();
+}
+function codeUp() {
+    minsub.src = "img/before.png";
+    cntText.className = "";
+    title.className = "";
+}
+
+function changeImgDown() {
+    codeDown();
 }
 function changeImgUp() {
-    minsub.src = "img/before.png";
+    codeUp();
 }
 
 function changeImgKeydown() {
     if (!state) {
-        audio.play();
         state = true;
-        cnt += 1;
-        minsub.src = "img/after.png";
-        cntText.innerHTML = `+${cnt}`;
+        codeDown();
     }
 }
 function changeImgKeyup() {
-    minsub.src = "img/before.png";
     state = false;
+    codeUp();
 }
 
 if (isMobile()) {
@@ -54,4 +66,13 @@ if (isMobile()) {
     page.addEventListener("mouseup", changeImgUp);
     page.addEventListener("keydown", changeImgKeydown);
     page.addEventListener("keyup", changeImgKeyup);
+}
+
+const savedCnt = localStorage.getItem("count");
+
+if (savedCnt !== null) {
+    cntText.innerHTML = `+${savedCnt}`;
+    cnt = parseInt(savedCnt);
+} else {
+    cntText.innerHTML = "0";
 }
