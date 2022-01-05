@@ -3,8 +3,9 @@ const minsub = document.querySelector("img");
 const page = document.querySelector("body");
 const audio = new Audio();
 let cnt = 0;
+let state = false;
 
-audio.src = "sounds/아야.mp3";
+audio.src = "sounds/헉.mp3";
 cntText.innerHTML = `${cnt}`;
 
 function isMobile() {
@@ -22,13 +23,27 @@ function isMobile() {
 }
 
 function changeImgDown() {
+    audio.play();
     cnt += 1;
     minsub.src = "img/after.png";
     cntText.innerHTML = `+${cnt}`;
-    audio.play();
 }
 function changeImgUp() {
     minsub.src = "img/before.png";
+}
+
+function changeImgKeydown() {
+    if (!state) {
+        audio.play();
+        state = true;
+        cnt += 1;
+        minsub.src = "img/after.png";
+        cntText.innerHTML = `+${cnt}`;
+    }
+}
+function changeImgKeyup() {
+    minsub.src = "img/before.png";
+    state = false;
 }
 
 if (isMobile()) {
@@ -37,6 +52,6 @@ if (isMobile()) {
 } else {
     page.addEventListener("mousedown", changeImgDown);
     page.addEventListener("mouseup", changeImgUp);
-    page.addEventListener("keydown", changeImgDown);
-    page.addEventListener("keyup", changeImgUp);
+    page.addEventListener("keydown", changeImgKeydown);
+    page.addEventListener("keyup", changeImgKeyup);
 }
